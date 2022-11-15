@@ -2,19 +2,12 @@
 <html lang="en">
     <head>
         <title>
-            JavaScript            
+            hello    
         </title>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                document.querySelector('form').onsubmit = function() {
-                    const name = document.querySelector('#name').value;
-                    alert(`Hello, ${name}`);
-                }
-            })
-        </script>
+        <script src="hello.js"></script>
     </head>
     <body>
-        <h1>Hello</h1>
+        <h1 id="greeting">Hello</h1>
         <form>
             <input autofocus id="name" type="text" placeholder="Name">
             <input type="submit">
