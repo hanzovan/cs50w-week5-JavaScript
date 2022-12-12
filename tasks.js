@@ -1,32 +1,46 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // By default, submit button is disable
-    document.querySelector('#submit').disabled = true;
+    // Set variables
+    let input = document.querySelector('#task');
+    let submit = document.querySelector('#submit');
+    let tasks = document.querySelector('#tasks');
 
-    document.querySelector('#task').onkeyup = () => {
+    // By default, submit button is disable
+    submit.disabled = true;
+
+    input.onkeyup = () => {
 
         // If the input don't have any character, also use trim to eliminate space
-        if (document.querySelector('#task').value.trim().length > 0) {
-            document.querySelector('#submit').disabled = false;
+        if (input.value.trim().length > 0) {
+            submit.disabled = false;
         }
         else {
-            document.querySelector('#submit').disabled = true;
+            submit.disabled = true;
         }        
     }
 
-    document.querySelector('form').onsubmit = () => {
-        const task = document.querySelector('#task').value;
+    document.querySelector('#form1').onsubmit = () => {
+        const task = input.value;
         
         const li = document.createElement('li');
         li.innerHTML = task;
 
-        document.querySelector('#tasks').append(li);
+        tasks.append(li);
 
-        document.querySelector('#task').value = '';
+        input.value = '';
 
-        document.querySelector('#submit').disabled = true;
+        submit.disabled = true;
 
         // stop form from submitting
         return false;
     }
+
+    // Disable Enter key for this form's input
+    input.addEventListener('keypress', function(e) {
+        if (e.keyCode === 13 || e.which === 13) {
+            e.preventDefault();
+            return false;
+        }
+    })
+
 })
