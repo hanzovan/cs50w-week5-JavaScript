@@ -1,20 +1,39 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-    // Set default submit button to be disabled
-    document.querySelector('#submit').disabled = true;
+    // Set variables
+    let input = document.querySelector('#currency');
+    let submit = document.querySelector('#submit');
+    let form = document.querySelector('#exchange-form');
+    let source = 'https://api.exchangerate.host/latest?base=USD';
+    let result = document.querySelector('#list');
+    let note = document.querySelector('#result');
 
-    // When keyup with some value, the button can be used again
-    document.querySelector('#currency').onkeyup = function() {
-        if (document.querySelector('#currency').value.trim().length > 0) {
-            document.querySelector('#submit').disabled = false;
-        } else {
-            document.querySelector('#submit').disabled = true;
+    // function to disable Enter button in the input field
+    function enter_disable(e) {
+        if (e.keyCode === 13 || e.which === 13) {
+            e.preventDefault();
+            return false;
         }
     }
 
-    document.querySelector('form').onsubmit = function() {
-        const currency = document.querySelector('#currency').value.toUpperCase();
-        fetch('https://api.exchangerate.host/latest?base=USD')
+    // Set default submit button and enter button to be disabled
+    submit.disabled = true;
+    input.addEventListener('keypress', enter_disable);
+
+    // When keyup with some value, the button can be used again
+    input.onkeyup = function() {
+        if (input.value.trim().length > 0) {
+            submit.disabled = false;
+            input.removeEventListener('keypress', enter_disable);
+        } else {
+            submit.disabled = true;
+            input.addEventListener('keypress', enter_disable);
+        }
+    }
+
+    form.onsubmit = function() {
+        const currency = input.value.toUpperCase();
+        fetch(source)
         .then(response => response.json())
         .then(data => {
             
@@ -24,20 +43,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 const li = document.createElement('li');
                 li.innerHTML = `${rate.toFixed(3)} ${currency}`;
-                document.querySelector('#list').append(li);
-                document.querySelector('#result').innerHTML = `1 USD is equal to ${rate.toFixed(3)} ${currency}`;
+                result.append(li);
+                note.innerHTML = `1 USD is equal to ${rate.toFixed(3)} ${currency}`;
 
             } else {
-                document.querySelector('#result').innerHTML = "Invalid currency";
+                note.innerHTML = "Invalid currency";
             }            
         })
         .catch(error => {
             console.log('Error: ', error);
         })
 
-        document.querySelector('#currency').value = '';
+        input.value = '';
 
-        document.querySelector('#submit').disabled = true;
+        submit.disabled = true;
+        input.addEventListener('keypress', enter_disable);
 
         return false;
     }
