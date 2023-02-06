@@ -7,7 +7,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Define function that disable Enter key in the form
     function dis_Enter(e) {
-        if(e.keyCode === 13 || e.which === 13) {
+        // if(e.keyCode === 13 || e.which === 13) {
+        //     e.preventDefault();
+        //     return false;
+        // }
+        if(e.key === 'Enter') {
             e.preventDefault();
             return false;
         }
